@@ -308,3 +308,113 @@
     color: #878787;
     opacity: 1;
 }
+
+
+/* MEDIA QUERY FOR IPHONE 5  AND IPHONE6*/
+
+
+@media only screen and (min-width: 250px) and (max-width: 400px)  {
+
+
+
+    .bookIcon{
+        /*     border:1px solid green; */
+            height:25px;
+            width:30px;
+            margin-left:1%;
+        }
+        
+        .BOOKSTORE{
+            height:25px;
+            width:100px;
+            margin-left:5%;
+        }
+        
+        .searchInput{
+            display:none;
+        }
+        .searchInput1{
+            display:none;
+        }
+        .searchBar{
+            display:flex;
+            font-size:10px;
+            width:80px;
+            margin-left:1%;
+        }
+        .cart{
+            margin-left:auto;
+        }
+        
+        .user{
+            margin-left:auto;
+        }
+
+        .flex-container1{
+            justify-content:center;
+            margin-top:10%;
+            /* border-top:1px solid blue; */
+        }
+
+        .header{
+
+            margin-left:-1%;
+        }
+
+}
+
+
+/* MEDIA QUERY FOR IPAD */
+
+@media only screen and (min-width: 750px) and (max-width: 800px)  {
+
+    
+      
+    .bookIcon{
+        /*     border:1px solid green; */
+            height:25px;
+            width:30px;
+/*             margin-left:%; */
+        }
+        
+        .BOOKSTORE{
+            height:25px;
+            width:100px;
+            /* margin-left:%; */
+        }
+        
+        .searchInput{
+/*             display:none; */
+        }
+        .searchInput1{
+/*             display:none; */
+        }
+        .searchBar{
+            display:flex;
+            font-size:10px;
+            width:280px;
+/*             margin-left:10%; */
+        }
+        .cart{
+/*             margin-left:50px; */
+        }
+        
+        .user{
+            margin-left:10%;
+        }
+
+        .flex-container1{
+/*             justify-content:center; */
+            margin-top:10%;
+            border-top:1px solid blue;
+        }
+
+        .header{
+
+            margin-left:-1%;
+        }
+
+ 
+    
+    
+}
