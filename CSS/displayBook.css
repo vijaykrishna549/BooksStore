@@ -16,7 +16,7 @@
     flex-direction: row;
     align-items: center;
     width: 100%;
-    height:5%;
+    height:60px;
     /* border:1px solid blue; */
     background: #A03037 0% 0% no-repeat padding-box;
 
@@ -181,7 +181,7 @@
     /* flex-direction: row; */
     width: 100%;
     height:85%;
-    margin-top:12%;
+    margin-top:8%;
     /* border:1px solid yellow; */
 
 }
@@ -215,7 +215,7 @@
 .dd{
     height: 200px;
     width:100px;
-    /* border: 1px solid green; */
+    border: 1px solid green;
 }
 
 .bookContainer1{
@@ -228,8 +228,9 @@
     height:367px;
     width:282px;
     background-position: center;
+    /* border: 5px solid red; */
     /* background: #FFFFFF 0% 0% no-repeat padding-box; */
-    border: 2px solid #E2E2E2;
+    /* border: 2px solid #E2E2E2; */
     border-radius: 3px;
     opacity: 1;
     margin-top: 20px;
@@ -441,8 +442,8 @@
     height:600px;
     width:550px;
     margin-left: 39.5%;
-    margin-top: 33%;
-    /* border:1px solid green; */
+    margin-top: 27%;
+    /* border:1px solid grey; */
     position: absolute;
 }
 
@@ -596,4 +597,240 @@
     opacity: 1;
 }
 
+/* MEDIA QUERY FOR IPHONE5 */
+
+@media only screen and (min-width: 250px) and (max-width: 340px) {
+    .main-container{
+        width:100%;
+    }
+    .bookIcon{
+        /*     border:1px solid green; */
+            height:25px;
+            width:30px;
+            margin-left:1%;
+        }
+        
+        .BOOKSTORE{
+            height:25px;
+            width:100px;
+            margin-left:5%;
+        }
+        
+        .searchInput{
+            display:none;
+        }
+        .searchInput1{
+            display:none;
+        }
+        .searchBar{
+            display:flex;
+            font-size:10px;
+            width:80px;
+            margin-left:1%;
+        }
+        .cart{
+            margin-left:auto;
+        }
+        
+        .user{
+            margin-left:auto;
+        }
+
+        .flex-container11{
+            flex-direction:column;
+            margin-top:100%;
+            margin-left:0%;
+            /* width:304px; */
+        /*     position:relative; */
+        }
+
+        .flex-container21{
+            width:304px;
+            margin-left:0%;
+            /* border:1px solid red */
+        }
+        .flex-container111{
+            margin-left:0%;
+            width: 304px;
+        }
+        
+        
+        .feedbackContainer{
+            position:relative;
+            /* top:0%; */
+            width:304px;
+            margin-left:0%;
+            /* border:1px solid green; */
+        }
+        
+        .header{
+            width:100%;
+        }
+
+        .sButton{
+            margin-left:73%;
+        }
+
+        .strContent{
+            width:304px;
+            /* margin-top: 10px; */
+        }
+        .shweta{
+            margin-top:12px;
+        }
+        
+
+}
+
+
   
+/* MEDIA QUER FOR IPHONE 6 */
+
+@media only screen and (min-width: 350px) and (max-width: 400px) {
+    .bookIcon{
+        /*     border:1px solid green; */
+            height:25px;
+            width:30px;
+            margin-left:1%;
+        }
+        
+        .BOOKSTORE{
+            height:25px;
+            width:100px;
+            margin-left:5%;
+        }
+        
+        .searchInput{
+            display:none;
+        }
+        .searchInput1{
+            display:none;
+        }
+        .searchBar{
+            display:flex;
+            font-size:10px;
+            width:80px;
+            margin-left:1%;
+        }
+        .cart{
+            margin-left:auto;
+        }
+        
+        .user{
+            margin-left:auto;
+        }
+
+
+        .flex-container11{
+            flex-direction:column;
+            margin-top:60%;
+            margin-left:0%;
+        /*     position:relative; */
+        }
+
+        .flex-container21{
+            width:361px;
+            margin-left:0%;
+            /* border:1px solid red */
+        }
+        .flex-container111{
+            margin-left:0%;
+        }
+        
+        
+        .feedbackContainer{
+            position:relative;
+            /* top:0%; */
+            width:361px;
+            margin-left:0%;
+            /* border:1px solid green; */
+        }
+        
+        .header{
+            width:100%;
+        }
+
+        .sButton{
+            margin-left:77%;
+        }
+
+        .strContent{
+            width:361px;
+        }
+
+        .shweta{
+            margin-top:12px;
+        }
+        
+        
+        
+
+}
+
+
+/* MEDIA QUERY FOR IPAD */
+@media only screen and (min-width: 768px) and (max-width: 800px) {
+    .main-container{
+        width:100%;
+    }
+
+    .bookIcon{
+        /*     border:1px solid green; */
+            height:25px;
+            width:30px;
+/*             margin-left:%; */
+        }
+        
+        .BOOKSTORE{
+            height:25px;
+            width:100px;
+            /* margin-left:%; */
+        }
+        
+        .searchInput{
+/*             display:none; */
+        }
+        .searchInput1{
+/*             display:none; */
+        }
+        .searchBar{
+            display:flex;
+            font-size:10px;
+            width:280px;
+/*             margin-left:10%; */
+        }
+        .cart{
+/*             margin-left:50px; */
+        }
+        
+        .user{
+            margin-left:10%;
+        }
+
+        .flex-container1{
+/*             justify-content:center; */
+            margin-top:10%;
+            /* border-top:1px solid blue; */
+        }
+
+        .header{
+
+            /* margin-left:-1%; */
+        }
+
+
+    .feedbackContainer{
+        width:45%;
+        margin-top: 60%;
+        margin-left: 67%;
+    }
+
+    .sButton{
+        margin-left:75%;
+    }
+    .strContent{
+        /* border:1px solid red; */
+        width: 100%;
+        height: 65px;
+    }
+}
