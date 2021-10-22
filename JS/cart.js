@@ -34,6 +34,7 @@ window.addEventListener('DOMContentLoaded', function () {
     let state1;
     let address;
     let h = "Home";
+    let cont;
 
     inputAddress.addEventListener('change', function () {
         address = inputAddress.value;
@@ -52,6 +53,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
 
 
+
     placeOrderBtn.addEventListener('click', function () {
         AddressDetails.style.display = 'none';
         CustomerDetails.style.display = 'flex';
@@ -61,14 +63,14 @@ window.addEventListener('DOMContentLoaded', function () {
     continueButton.addEventListener('click', function () {
         OrderSummary.style.display = 'none';
         OrderSummary1.style.display = 'flex';
-       
+
     })
 
 
 
     $(document).on('click', '.bookHead', function (event) {
         remCart = event.target.id
-        console.log(remCart)
+        // console.log(remCart)
 
         $(document).on('click', '.removeItem', function () {
             console.log("hello")
@@ -108,7 +110,7 @@ window.addEventListener('DOMContentLoaded', function () {
                 console.log(editedUser)
                 console.log(editedUser.status)
 
-                if(editedUser.status === 200){
+                if (editedUser.status === 200) {
                     continueButton.style.display = 'none';
 
                 }
@@ -122,64 +124,250 @@ window.addEventListener('DOMContentLoaded', function () {
     let cartBook = [];
     let crtBook = [];
     let cartQid;
+    let filterArry;
+    let x;
+    let y;
 
+    let cnt;
+    let bookNum;
+    let cnt2;
+    let bookNum2;
     // updateDisplay();
 
     // counterPlus.addEventListener("click", () => {
     $(document).on('click', '.counter-plus', function (event) {
         let cartQid = event.target.id
-        count += 1;
+      
+        x = $(`#${cartQid}.counter-display`).html();
+        // console.log(x)
+        y = parseInt(x)
+        // console.log(y);
+
+        y = y +1;
 
 
-        // $('.counter-display').html(count);
 
         let cartCount = {
-            _id: cartQid,
-            quantityToBuy: count,
+            // _id: cartQid,
+            "quantityToBuy": y,
         }
 
-        console.log(cartCount);
+        console.log(cartCount.quantityToBuy);
 
-        requirejs(['../service/dataService.js'], function (methods) {
-            methods.addQuantity(cartCount).then(function (bookQuantity) {
-                console.log(bookQuantity)
-                location.reload();
+        let actObj = JSON.stringify(cartCount);
 
+
+        function ajax(url) {
+            return new Promise(function (resolve, reject) {
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+                        // console.log(xhr.response, xhr.responseXML);
+                        resolve(xhr.response)
+                    }
+                };
+                xhr.open('PUT', url, true);
+                xhr.setRequestHeader('x-access-token', localStorage.getItem('token'));
+                xhr.setRequestHeader("Content-type", "application/json");
+
+                xhr.onerror = reject;
+
+                xhr.send(actObj);
+            });
+        }
+
+        function ajaxGet(url) {
+            return new Promise(function (resolve, reject) {
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+                        // console.log(xhr.response, xhr.responseXML);
+                        resolve(xhr.response)
+                    }
+                };
+                xhr.open('GET', url, true);
+                xhr.setRequestHeader('x-access-token', localStorage.getItem('token'));
+                xhr.setRequestHeader("Content-type", "application/json");
+
+                xhr.onerror = reject;
+
+                xhr.send();
+            });
+        }
+
+
+
+
+        ajaxGet(`https://new-bookstore-backend.herokuapp.com/bookstore_user/get_cart_items`)
+        .then(function (result) {
+            // console.log(result + "hello");
+            $(`#${cartQid}.counter-display`).html(cnt)
+            let Res = JSON.parse(result);
+            console.log(Res.result);
+            // console.log(Res.result[2].quantityToBuy)
+            // console.log(JSON.parse(result)); // Code depending on result
+            filterArry = Res.result.filter(function (book) {
+                return book._id == cartQid;
             })
+
+            bookNum = filterArry.map(function (book3) {
+                cnt = book3.quantityToBuy
+                // console.log(book3.quantityToBuy)
+                console.log(cnt)
+                // return `<div class="counter-display" id="${book3._id}">${book3.quantityToBuy}</div>`
+            });
+
+
+
+            console.log(filterArry)
+            // console.log(cartQid)
+            ajax(`https://new-bookstore-backend.herokuapp.com/bookstore_user/cart_item_quantity/${cartQid}`)
+            .then(function (result) {
+            
+                console.log(result);
+                let j = JSON.parse(result);{
+                    console.log(j)
+                }
+
+        
+            })
+
+            .catch(function (error) {
+                console.log(error)
+                // An error occurred
+            });
+
+
         })
+        .catch(function (error) {
+            console.log(error)
+            // An error occurred
+        });
+        
+
 
 
     });
 
+
+
+
+
+
+
+
     $(document).on('click', '.counter-minus', function (event) {
         cartQid = event.target.id
 
-        if (count > 0) {
-            count -= 1;
+        x = $(`#${cartQid}.counter-display`).html();
+        // console.log(x)
+        y = parseInt(x)
+        // console.log(y);
+
+        if (y > 0) {
+            y = y - 1;
         }
-        else if (count == 0) {
-            return count;
+        else if (y == 0) {
+            return y;
         }
 
 
-        $('.counter-display').html(count);
+        // $('.counter-display').html(count);
 
 
 
         let cartCount = {
-            _id: cartQid,
-            quantityToBuy: count,
+            // _id: cartQid,
+            quantityToBuy: y,
         }
 
-        console.log(cartCount);
+        console.log(cartCount.quantityToBuy);
 
-        requirejs(['../service/dataService.js'], function (methods) {
-            methods.addQuantity(cartCount).then(function (bookQuantity) {
-                console.log(bookQuantity)
-                location.reload();
 
+        let actObj = JSON.stringify(cartCount);
+
+
+        function ajax(url) {
+            return new Promise(function (resolve, reject) {
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+                        // console.log(xhr.response, xhr.responseXML);
+                        resolve(xhr.response)
+                    }
+                };
+                xhr.open('PUT', url, true);
+                xhr.setRequestHeader('x-access-token', localStorage.getItem('token'));
+                xhr.setRequestHeader("Content-type", "application/json");
+
+                xhr.onerror = reject;
+
+                xhr.send(actObj);
+            });
+        }
+
+
+        
+        function ajaxGet(url) {
+            return new Promise(function (resolve, reject) {
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+                        // console.log(xhr.response, xhr.responseXML);
+                        resolve(xhr.response)
+                    }
+                };
+                xhr.open('GET', url, true);
+                xhr.setRequestHeader('x-access-token', localStorage.getItem('token'));
+                xhr.setRequestHeader("Content-type", "application/json");
+
+                xhr.onerror = reject;
+
+                xhr.send();
+            });
+        }
+
+
+
+        ajax(`https://new-bookstore-backend.herokuapp.com/bookstore_user/cart_item_quantity/${cartQid}`)
+            .then(function (result) {
+                // console.log("hii")
+                console.log(result);
+
+                ajaxGet(`https://new-bookstore-backend.herokuapp.com/bookstore_user/get_cart_items`)
+                    .then(function (result) {
+                        // console.log(result + "hello");
+                        $(`#${cartQid}.counter-display`).html(cnt2)
+                        let Res = JSON.parse(result);
+                        console.log(Res.result);
+                        // console.log(Res.result[2].quantityToBuy)
+                        // console.log(JSON.parse(result)); // Code depending on result
+                        filterArry = Res.result.filter(function (book) {
+                            return book._id == cartQid;
+                        })
+
+                        console.log(filterArry)
+                        bookNum2 = filterArry.map(function (book3) {
+                            console.log(book3.quantityToBuy)
+                            cnt2 = book3.quantityToBuy 
+
+                            // return `<div class="counter-display" id="${book3._id}">${book3.quantityToBuy}</div>`
+                        });
+
+
+
+                    })
+                    .catch(function (error) {
+                        console.log(error)
+                        // An error occurred
+                    });
+
+                // Code depending on result
             })
-        })
+            .catch(function (error) {
+                console.log(error)
+                // An error occurred
+            });
 
 
     });
@@ -199,55 +387,75 @@ window.addEventListener('DOMContentLoaded', function () {
     })
 
 
-    requirejs(['../service/dataService.js'], (methods) => {
-        methods.getCartItems().then(function (abc) {
-            // let res = getResponse.data.result;
-            console.log(abc.data.result)
-            cartBook = abc.data.result;
-            console.log(cartBook)
-            // console.log(cartBook[0].quantityToBuy)
 
-            // $('.counter-display').html(cartBook.product_id.quantity);
 
-            cartContainer.innerHTML = cartBook.map(function (cartItem) {
+    function ajaxGet1(url) {
+        return new Promise(function (resolve, reject) {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+                    // console.log(xhr.response, xhr.responseXML);
+                    resolve(xhr.response)
+                }
+            };
+            xhr.open('GET', url, true);
+            xhr.setRequestHeader('x-access-token', localStorage.getItem('token'));
+            xhr.setRequestHeader("Content-type", "application/json");
 
-                return `
-                <div class="bookHead" id="${cartItem._id}">
-                    <div class="bookContainer" id="${cartItem._id}">
-                        <img src="/Assets/cartImage 11.png" width="100%" height="100%" id="${cartItem._id}">
-                    </div>
-                    <div class="detailContainer" id="${cartItem._id}">
-    
-                        <div class="bookName1" id="bookName">${cartItem.product_id.bookName}</div>
-                        <div class="author1" id="author">${cartItem.product_id.author}</div>
-    
-                        <div class="price1" id="${cartItem._id}">
-                            <div class="price11" id="${cartItem._id}">Rs. ${cartItem.product_id.discountPrice}</div>
-                            <div class="originalPrice1" id="${cartItem._id}"> ${cartItem.product_id.price}</div>
-                        </div> <div class="counterHead" id="${cartItem._id}">
-                        <button class="counter-minus" id="${cartItem._id}">-</button>
-                        <div class="counter-display" id="${cartItem._id}">${cartItem.quantityToBuy}</div>
-                        
-                        <button class="counter-plus" id="${cartItem._id}">+</button>
-                        
-                        <button class="removeItem" id="${cartItem._id}">Remove</button>
-                        
-                    
+            xhr.onerror = reject;
+
+            xhr.send();
+        });
+    }
+
+    ajaxGet1(`https://new-bookstore-backend.herokuapp.com/bookstore_user/get_cart_items`)
+    .then(function (result) {
+
+        let Res = JSON.parse(result);
+        // console.log(Res.result);
+        let bookNum3 = Res.result
+        console.log(bookNum3);
+  
+
+        cartContainer.innerHTML = bookNum3.map(function (cartItem) {
+
+            return `
+            <div class="bookHead" id="${cartItem._id}">
+                <div class="bookContainer" id="${cartItem._id}">
+                    <img src="/Assets/cartImage 11.png" width="100%" height="100%" id="${cartItem._id}">
                 </div>
-    
-                    </div>
-                </div>`
-            }).join(' ');
+                <div class="detailContainer" id="${cartItem._id}">
 
-        })
-        // .catch(function (error) {
-        //     console.log(error)
-        // })
+                    <div class="bookName1" id="bookName">${cartItem.product_id.bookName}</div>
+                    <div class="author1" id="author">${cartItem.product_id.author}</div>
 
-        // function as(event) {
-        //     console.log(event.target.id)
-        // }
+                    <div class="price1" id="${cartItem._id}">
+                        <div class="price11" id="${cartItem._id}">Rs. ${cartItem.product_id.discountPrice}</div>
+                        <div class="originalPrice1" id="${cartItem._id}"> ${cartItem.product_id.price}</div>
+                    </div> <div class="counterHead" id="${cartItem._id}">
+                    <button class="counter-minus" id="${cartItem._id}">-</button>
+                    <div class="counter-display" id="${cartItem._id}">${cartItem.quantityToBuy}</div>
+                    
+                    <button class="counter-plus" id="${cartItem._id}">+</button>
+                    
+                    <button class="removeItem" id="${cartItem._id}">Remove</button>
+                    
+                
+            </div>
+
+                </div>
+            </div>`
+        }).join(' ');
+
+       
+
+
     })
+    .catch(function (error) {
+        console.log(error)
+        // An error occurred
+    });
+
 
 
     continueButton.addEventListener('click', function () {
@@ -280,16 +488,16 @@ window.addEventListener('DOMContentLoaded', function () {
             checkoutButton.addEventListener('click', function () {
 
                 console.log('checkoutBtn')
-              
+
                 console.log(crtBook)
                 //   console.log(crtBook.product_id.bookName)
-                let nme = crtBook.map(function(book){
+                let nme = crtBook.map(function (book) {
                     return {
-                         product_id: `${book._id}`,
-                                    product_name: `${book.product_id.bookName}`,
-                                    product_quantity: `${book.quantityToBuy}`,
-                                    product_price: `${book.product_id.price}`,
-                                }
+                        product_id: `${book._id}`,
+                        product_name: `${book.product_id.bookName}`,
+                        product_quantity: `${book.quantityToBuy}`,
+                        product_price: `${book.product_id.price}`,
+                    }
                 })
                 console.log(nme);
 
@@ -297,81 +505,35 @@ window.addEventListener('DOMContentLoaded', function () {
                 let objOrder = {
                     orders: nme,
                 }
-                // console.log(nme)
 
-                // let bkid = crtBook.map(function(orFun){
-                //     return orFun._id
-                // })
-                // console.log(bkid)
 
-                // let qtt = crtBook.map(function(orFun){
-                //     return orFun.quantityToBuy
-                // })
-                // console.log(qtt)
 
-                // let prc = crtBook.map(function(orFun){
-                //     return orFun.product_id.discountPrice
-                // })
-                // console.log(prc)
-        
-                // let objOrder = {
-        
-                //     orders: [
-                //         {
-                //             product_id: bkid[0],
-                //             product_name: nme[0],
-                //             product_quantity: qtt[0],
-                //             product_price: "1234",
-                //         },
-                //         // {
-                //         //     product_id: bkid[1],
-                //         //     product_name: nme[1],
-                //         //     product_quantity: qtt[1],
-                //         //     product_price: prc[1],
-                //         // },
-                //         // {
-                //         //     product_id: bkid[2],
-                //         //     product_name: nme[2],
-                //         //     product_quantity: qtt[2],
-                //         //     product_price: prc[2],
-                //         // },
-                //         // {
-                //         //     product_id: bkid[3],
-                //         //     product_name: nme[3],
-                //         //     product_quantity: qtt[3],
-                //         //     product_price: prc[3],
-                //         // },
-                //         // {
-                //         //     product_id: bkid[4],
-                //         //     product_name: nme[4],
-                //         //     product_quantity: qtt[4],
-                //         //     product_price: prc[4],
-                //         // },
-                //     ]
-                // }
-        
+
                 console.log(objOrder)
                 console.log(crtBook)
                 // console.log(crtBook.bookName)
-        
+
                 requirejs(['../service/dataService.js'], (methods) => {
                     console.log('hello');
                     methods.addOrder(objOrder).then(function (finalOrder) {
-                        console.log(finalOrder);
+                        console.log(finalOrder.status);
+                        if (finalOrder.status === 200){
+                            window.location ="http://localhost:5501/Pages/OrderComplete.html"
+                        }
                         console.log(finalOrder.data.result)
                         // crtBook = crt.data.result;
                         // console.log(crtBook)
-        
-        
-        
+
+
+
                     })
-        
+
                 })
-        
+
             })
         })
     })
 
-  
+
 
 })
