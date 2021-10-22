@@ -68,7 +68,7 @@ window.addEventListener('DOMContentLoaded', function () {
     console.log(event.target.id)
     console.log(event.target.textContent)
 
-    window.location = `http://localhost:5500/Pages/displayBook.html?id=${event.target.id}`
+    window.location = `http://localhost:5501/Pages/displayBook.html?id=${event.target.id}`
   })
 
 
