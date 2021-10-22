@@ -16,7 +16,8 @@
     flex-direction: row;
     align-items: center;
     width: 100%;
-    height:5%;
+    /* height:5%; */
+    height:60px;
     /* border:1px solid blue; */
     background: #A03037 0% 0% no-repeat padding-box;
 
@@ -233,7 +234,7 @@
     align-items: center;
     width: 105px;
     height: 135px;
-    border: 1px solid red;
+    /* border: 1px solid red; */
     /* background-image: url('/Assets/Image\ 11.png'); */
 }
 
@@ -309,7 +310,6 @@
     opacity: 1;
 }
 
-
 /* MEDIA QUERY FOR IPHONE 5  AND IPHONE6*/
 
 
@@ -321,13 +321,15 @@
         /*     border:1px solid green; */
             height:25px;
             width:30px;
-            margin-left:1%;
+            margin-left:8%;
         }
         
         .BOOKSTORE{
-            height:25px;
-            width:100px;
+            height:20px;
+            width:70px;
+            font-size:15px;
             margin-left:5%;
+            /* border: 1px solid black; */
         }
         
         .searchInput{
@@ -343,11 +345,11 @@
             margin-left:1%;
         }
         .cart{
-            margin-left:auto;
+            margin-left:5%;
         }
         
         .user{
-            margin-left:auto;
+            margin-left:5%;
         }
 
         .flex-container1{
@@ -357,8 +359,9 @@
         }
 
         .header{
+            height:50px;
 
-            margin-left:-1%;
+            margin-left:-1.5%;
         }
 
 }
@@ -406,12 +409,13 @@
         .flex-container1{
 /*             justify-content:center; */
             margin-top:10%;
-            border-top:1px solid blue;
+            /* border-top:1px solid blue; */
         }
 
         .header{
+            height:60px;
 
-            margin-left:-1%;
+            /* margin-left:-1%; */
         }
 
  
