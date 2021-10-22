@@ -15,18 +15,21 @@ window.addEventListener('DOMContentLoaded', function () {
     const originalPrice1 = document.querySelector('.originalPrice1')
     const bkDetail = document.querySelector('.bk2')
     const flxContainer = document.querySelector('.flex-container21')
-    const bagButton = document.querySelector('.bagButton')
+    const bagButton = document.getElementById('bagButton')
     const wishButton = document.querySelector('.wishButton')
-    const productCounter = document.querySelector('.productCounter')
-    let counterDisplay = document.querySelector('.counter-display');
-    let counterMinus = document.querySelector('.counter-minus');
-    let counterPlus = document.querySelector('.counter-plus');
+    const productCounter = document.getElementById('productCounter')
+    let counterDisplay = document.getElementById('counter-display');
+    let counterMinus = document.getElementById('counter-minus');
+    let counterPlus = document.getElementById('counter-plus');
     const cart = document.querySelector('.cart')
     const userOptions = document.querySelector('.userOptions')
     const wishBtn = document.querySelector('.wishBtn')
 
 
-    let count = 1;
+    // let count = 1;
+    let cartBook = [];
+    let crtBook = [];
+
 
     // updateDisplay();
 
@@ -59,6 +62,7 @@ window.addEventListener('DOMContentLoaded', function () {
                     <div class="price11" id=${book1._id}>Rs. ${book1.discountPrice}</div>
                     <div class="originalPrice1" id=${book1._id}> ${book1.price}</div>
                 </div>
+                
     
     
             </div>
@@ -73,6 +77,12 @@ window.addEventListener('DOMContentLoaded', function () {
         })
 
     })
+
+
+
+
+
+
     user.addEventListener('click', function () {
         console.log("user")
         userOptions.style.display = "flex";
@@ -80,7 +90,7 @@ window.addEventListener('DOMContentLoaded', function () {
     })
 
     wishBtn.addEventListener('click', function () {
-        window.location = "http://localhost:5500/Pages/wishlist.html";
+        window.location = "http://localhost:5501/Pages/wishlist.html";
 
     })
     // ADD TO CART
@@ -117,14 +127,14 @@ window.addEventListener('DOMContentLoaded', function () {
         console.log('wish')
 
         let objWish = {
-           product_id: params.id,
+            product_id: params.id,
             // quantityToBuy: count,
         }
 
         console.log(objWish);
 
-        requirejs(['../service/dataService.js'], function (methods){
-            methods.wish(objWish).then(function(wishResponse){
+        requirejs(['../service/dataService.js'], function (methods) {
+            methods.wish(objWish).then(function (wishResponse) {
                 console.log(wishResponse)
 
             })
@@ -136,68 +146,385 @@ window.addEventListener('DOMContentLoaded', function () {
 
     // COUNTER CODE
 
-    $(document).on('click', '.counter-plus', function (event) {
-        // let cartQid = event.target.id
-        count += 1;
 
+    let cartQid;
+    let filterArry;
+    let x;
+    let y;
 
-        $('.counter-display').html(count);
+    let cnt;
+    let bookNum;
+    let cnt2;
+    let bookNum2;
 
-        let cartCount = {
-            _id: params.id,
-            quantityToBuy: count,
+    $(document).on('click', '.counter-plus', function () {
+
+        function ajaxGet(url) {
+            return new Promise(function (resolve, reject) {
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+                        // console.log(xhr.response, xhr.responseXML);
+                        resolve(xhr.response)
+                    }
+                };
+                xhr.open('GET', url, true);
+                xhr.setRequestHeader('x-access-token', localStorage.getItem('token'));
+                xhr.setRequestHeader("Content-type", "application/json");
+
+                xhr.onerror = reject;
+
+                xhr.send();
+            });
         }
 
-        console.log(cartCount);
 
-        requirejs(['../service/dataService.js'], function (methods){
-            methods.addQuantity(cartCount).then(function(bookQuantity){
-                console.log(bookQuantity)
+
+
+
+
+        x = $(`.counter-display`).html();
+        // x = counterDisplay.innerHTML
+        console.log(x)
+        y = parseInt(x)
+        console.log(y);
+
+        y = y + 1;
+
+        console.log(y)
+
+
+
+        let cartCount = {
+            // _id: cartQid,
+            "quantityToBuy": y,
+        }
+
+        console.log(cartCount)
+        console.log(cartCount.quantityToBuy);
+
+        let actObj = JSON.stringify(cartCount);
+
+
+
+
+
+        ajaxGet(`https://new-bookstore-backend.herokuapp.com/bookstore_user/get_cart_items`)
+            .then(function (result) {
+                // console.log(result);
+
+
+
+
+                function ajax(url) {
+                    return new Promise(function (resolve, reject) {
+                        var xhr = new XMLHttpRequest();
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+                                // console.log(xhr.response, xhr.responseXML);
+                                resolve(xhr.responseText)
+                            }
+                        };
+                        xhr.open('PUT', url, true);
+                        xhr.setRequestHeader('x-access-token', localStorage.getItem('token'));
+                        xhr.setRequestHeader("Content-type", "application/json");
+
+                        xhr.onerror = reject;
+
+                        xhr.send(actObj);
+                    });
+                }
+
+
+                // console.log(JSON.parse(result.result))
+                let a = JSON.parse(result)
+                console.log(a.result)
+
+                let resArr = a.result
+
+                let b = resArr.filter(function (books) {
+                    console.log(books)
+                    if (books.product_id._id == params.id) {
+                        return books
+
+
+                    }
+
+                })
+                console.log(b)
+                let cartId = b[0]._id;
+                console.log(cartId)
+
+                ajax(`https://new-bookstore-backend.herokuapp.com/bookstore_user/cart_item_quantity/${cartId}`)
+                    .then(function (result) {
+                        console.log(result)
+                        let a = JSON.parse(result)
+                        console.log(a)
+
+                        let b = a.result
+                        console.log(b)
+
+
+
+                        ajaxGet(`https://new-bookstore-backend.herokuapp.com/bookstore_user/get_cart_items`)
+                            .then(function (result) {
+
+                                console.log(result)
+                                let a = JSON.parse(result)
+                                console.log(a)
+
+                                let b = a.result
+                                console.log(b)
+
+                                let filtArr = b.filter(function (book4) {
+                                    if (book4._id == cartId) {
+                                        return book4
+                                    }
+
+                                })
+                                console.log(filtArr[0].quantityToBuy)
+
+
+                                $('.counter-display').html(filtArr[0].quantityToBuy)
+                            })
+
+                    })
 
             })
-        })
+            .catch(function (error) {
+                console.log(error)
+                // An error occurred
+            });
+
+
+
+
 
 
     });
 
 
-    cart.addEventListener('click', function () {
-        window.location = "http://localhost:5500/Pages/cart.html"
 
-    })
+    $(document).on('click', '.counter-minus', function () {
 
-    $(document).on('click', '.counter-minus', function (event) {
-        cartQid = event.target.id
+        function ajaxGet(url) {
+            return new Promise(function (resolve, reject) {
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+                        // console.log(xhr.response, xhr.responseXML);
+                        resolve(xhr.response)
+                    }
+                };
+                xhr.open('GET', url, true);
+                xhr.setRequestHeader('x-access-token', localStorage.getItem('token'));
+                xhr.setRequestHeader("Content-type", "application/json");
 
-        if (count == 0){ 
-            return count;
+                xhr.onerror = reject;
+
+                xhr.send();
+            });
         }
-        else if(count > 0){
-            count -= 1;
+
+
+
+
+
+
+        x = $(`.counter-display`).html();
+        // x = counterDisplay.innerHTML
+        console.log(x)
+        y = parseInt(x)
+        console.log(y);
+
+
+        if (y > 0) {
+            y = y - 1;
         }
-        
-        $('.counter-display').html(count);
+        else if (y == 0) {
+            return y;
+        }
+
+
+
+        console.log(y)
 
 
 
         let cartCount = {
-            _id: params.id,
-            quantityToBuy: count,
+            // _id: cartQid,
+            "quantityToBuy": y,
         }
 
-        console.log(cartCount);
+        console.log(cartCount)
+        console.log(cartCount.quantityToBuy);
 
-        requirejs(['../service/dataService.js'], function (methods){
-            methods.addQuantity(cartCount).then(function(bookQuantity){
-                console.log(bookQuantity)
+        let actObj = JSON.stringify(cartCount);
+
+
+
+
+
+        ajaxGet(`https://new-bookstore-backend.herokuapp.com/bookstore_user/get_cart_items`)
+            .then(function (result) {
+                // console.log(result);
+
+
+
+
+                function ajax(url) {
+                    return new Promise(function (resolve, reject) {
+                        var xhr = new XMLHttpRequest();
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+                                // console.log(xhr.response, xhr.responseXML);
+                                resolve(xhr.responseText)
+                            }
+                        };
+                        xhr.open('PUT', url, true);
+                        xhr.setRequestHeader('x-access-token', localStorage.getItem('token'));
+                        xhr.setRequestHeader("Content-type", "application/json");
+
+                        xhr.onerror = reject;
+
+                        xhr.send(actObj);
+                    });
+                }
+
+
+                // console.log(JSON.parse(result.result))
+                let a = JSON.parse(result)
+                console.log(a.result)
+
+                let resArr = a.result
+
+                let b = resArr.filter(function (books) {
+                    console.log(books)
+                    if (books.product_id._id == params.id) {
+                        return books
+
+
+                    }
+
+                })
+                console.log(b)
+                let cartId = b[0]._id;
+                console.log(cartId)
+
+                ajax(`https://new-bookstore-backend.herokuapp.com/bookstore_user/cart_item_quantity/${cartId}`)
+                    .then(function (result) {
+                        console.log(result)
+                        let a = JSON.parse(result)
+                        console.log(a)
+
+                        let b = a.result
+                        console.log(b)
+
+
+
+                        ajaxGet(`https://new-bookstore-backend.herokuapp.com/bookstore_user/get_cart_items`)
+                            .then(function (result) {
+
+                                console.log(result)
+                                let a = JSON.parse(result)
+                                console.log(a)
+
+                                let b = a.result
+                                console.log(b)
+
+                                let filtArr = b.filter(function (book4) {
+                                    if (book4._id == cartId) {
+                                        return book4
+                                    }
+
+                                })
+                                console.log(filtArr[0].quantityToBuy)
+
+
+                                $('.counter-display').html(filtArr[0].quantityToBuy)
+                            })
+
+                    })
 
             })
-        })
+            .catch(function (error) {
+                console.log(error)
+                // An error occurred
+            });
+
+
+
+
 
 
     });
 
-   
+
+
+
+    let quant;
+    let filterArry3;
+
+
+    function ajaxGet1(url) {
+        return new Promise(function (resolve, reject) {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+                    // console.log(xhr.response, xhr.responseXML);
+                    resolve(xhr.response)
+                }
+            };
+            xhr.open('GET', url, true);
+            xhr.setRequestHeader('x-access-token', localStorage.getItem('token'));
+            xhr.setRequestHeader("Content-type", "application/json");
+
+            xhr.onerror = reject;
+
+            xhr.send();
+        });
+    }
+
+    ajaxGet1(`https://new-bookstore-backend.herokuapp.com/bookstore_user/get_cart_items`)
+        .then(function (result) {
+
+            let Res = JSON.parse(result);
+            // console.log(Res.result);
+            let bookNum3 = Res.result
+            console.log(bookNum3);
+            // console.log(bookNum3.quantityToBuy)
+
+            filterArry3 = bookNum3.filter(function (book) {
+                return book.product_id._id == params.id;
+                // quant = filterArry3.quantityToBuy
+
+            })
+            console.log(filterArry3)
+
+            quant = filterArry3.map(function (book) {
+                if (book.quantityToBuy > 0) {
+                    bagButton.style.display = 'none';
+                    productCounter.style.display = 'flex';
+
+                }
+                console.log(book.quantityToBuy)
+                return book.quantityToBuy
+
+
+
+            })
+
+            counterDisplay.innerHTML = quant[0]
+            console.log(quant)
+          
+        })
+        .catch(function (error) {
+            console.log(error)
+            // An error occurred
+        });
+
+
+
 
 })
 
