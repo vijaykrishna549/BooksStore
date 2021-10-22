@@ -5,8 +5,8 @@
     /* align-items: center; */
     position: relative;
    min-height:50vh;
-    width: 98vw;
-    border: 1px solid red;
+    width: 100vw;
+    /* border: 1px solid red; */
     
 }
 *:focus {
@@ -376,7 +376,7 @@
 .AddressDetails{
     display: flex;
     align-items: center;
-    height:4%;
+    height:60px;
     width:70%;
     margin-top: 1%;
     margin-left: 12%;
@@ -695,7 +695,7 @@
 .OrderSummary{
     display: flex;
     align-items: center;
-    height:4%;
+    height:60px;
     width:70%;
     margin-top: 1%;
     margin-left: 12%;
@@ -874,7 +874,7 @@
         align-items:center;
     }
     .bookIcon{
-        /*     border:1px solid green; */
+            /* border:1px solid green; */
             height:25px;
             width:30px;
             margin-left:1%;
@@ -883,7 +883,7 @@
         .BOOKSTORE{
             height:25px;
             width:100px;
-            margin-left:5%;
+            /* margin-left:5%; */
         }
         
         .searchInput{
@@ -905,6 +905,17 @@
         .user{
             margin-left:auto;
         }
+        .userOptions{
+            /* display: flex; */
+            /* flex-direction: column; */
+            height:80px;
+            width:70px;
+            position:absolute;
+            margin-left:65%;
+            margin-top:-148%;
+            border:1px solid grey;
+           
+        }
 
        
         .flex-container1{
@@ -920,7 +931,7 @@
 
         .bookContainer{
 /*             display:none; */
-            border:1px solid blue;
+            /* border:1px solid blue; */
 /*             width:105px; */
             height:75px;
         }
@@ -947,6 +958,44 @@
         .detailContainer{
             /* border:1px solid red; */
         }
+
+        .personalDetails{
+            display: flex;
+            flex-direction:column;
+            /* border: 1px solid red; */
+            height:15%;
+            width:88%;
+            margin-left: 7%;
+        
+        }
+        .fullName{
+            width:91%;
+
+        }
+        .mobileNumber{
+            width:91%;
+            margin-left:0%;
+        }
+
+        .locationDetails{
+            display: flex;
+          flex-direction:column;
+          /* border: 1px solid red; */
+          height:15%;
+          width:88%;
+          margin-left: 7%;
+
+      }
+      .cityAddress{
+          width:91%;
+      }
+
+      .stateAddress{
+          margin-left:0%;
+          width:91%;
+      }
+
+        
 
         .cntButton{
             display:flex;
@@ -1013,6 +1062,11 @@
         align-items:center;
     }
 
+    .header{
+        /* display: none; */
+        
+    }
+
     .bookIcon{
         /*     border:1px solid green; */
             height:25px;
@@ -1023,7 +1077,7 @@
         .BOOKSTORE{
             height:25px;
             width:100px;
-            margin-left:5%;
+            /* margin-left:5%; */
         }
         
         .searchInput{
@@ -1045,12 +1099,24 @@
         .user{
             margin-left:auto;
         }
+        .userOptions{
+            /* display: flex;
+            flex-direction: column; */
+            height:80px;
+            width:70px;
+            position:absolute;
+            margin-left:75%;
+            margin-top:-170%;
+            border:1px solid grey;
+           
+        }
+
 
        
         .flex-container1{
             justify-content:center;
             margin-top:10%;
-/*             border-top:1px solid blue; */
+            /* border-top:1px solid blue; */
         }
 
        
@@ -1096,6 +1162,42 @@
             justify-content:center;
 /*             align-items:center; */
         }
+        .personalDetails{
+            display: flex;
+            flex-direction:column;
+            /* border: 1px solid red; */
+            height:15%;
+            width:88%;
+            margin-left: 7%;
+        
+        }
+        .fullName{
+            width:91%;
+
+        }
+        .mobileNumber{
+            width:91%;
+            margin-left:0%;
+        }
+
+        .locationDetails{
+            display: flex;
+          flex-direction:column;
+          /* border: 1px solid red; */
+          height:15%;
+          width:88%;
+          margin-left: 7%;
+
+      }
+      .cityAddress{
+          width:91%;
+      }
+
+      .stateAddress{
+          margin-left:0%;
+          width:91%;
+      }
+
 
         .cntButton{
             display:flex;
