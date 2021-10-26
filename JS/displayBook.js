@@ -16,7 +16,9 @@ window.addEventListener('DOMContentLoaded', function () {
     const bkDetail = document.querySelector('.bk2')
     const flxContainer = document.querySelector('.flex-container21')
     const bagButton = document.getElementById('bagButton')
-    const wishButton = document.querySelector('.wishButton')
+    const wishButton = document.getElementById('wishButton')
+    const alWish = document.getElementById('alWish')
+    const alWish1 = document.getElementById('alWish1')
     const productCounter = document.getElementById('productCounter')
     let counterDisplay = document.getElementById('counter-display');
     let counterMinus = document.getElementById('counter-minus');
@@ -24,6 +26,18 @@ window.addEventListener('DOMContentLoaded', function () {
     const cart = document.querySelector('.cart')
     const userOptions = document.querySelector('.userOptions')
     const wishBtn = document.querySelector('.wishBtn')
+    const bookIcon = document.querySelector('.bookIcon')
+
+
+
+
+    bookIcon.addEventListener('click', function () {
+        window.location.href = 'http://localhost:5501/Pages/BookListing.html'
+    })
+
+    cart.addEventListener('click', function () {
+        window.location.href = 'http://localhost:5501/Pages/cart.html'
+    })
 
 
     // let count = 1;
@@ -90,6 +104,7 @@ window.addEventListener('DOMContentLoaded', function () {
     })
 
     wishBtn.addEventListener('click', function () {
+        console.log('hellp')
         window.location = "http://localhost:5501/Pages/wishlist.html";
 
     })
@@ -100,6 +115,7 @@ window.addEventListener('DOMContentLoaded', function () {
         console.log('hai')
         bagButton.style.display = 'none'
         productCounter.style.display = "flex"
+        counterDisplay.innerHTML = 1;
 
         let obj1 = {
             product_id: params.id,
@@ -125,6 +141,8 @@ window.addEventListener('DOMContentLoaded', function () {
 
     wishButton.addEventListener('click', function () {
         console.log('wish')
+        alWish.style.display ='flex'
+        wishButton.style.display = 'none'
 
         let objWish = {
             product_id: params.id,
@@ -463,7 +481,9 @@ window.addEventListener('DOMContentLoaded', function () {
 
 
     let quant;
+    let quant4;
     let filterArry3;
+    let filterArry4;
 
 
     function ajaxGet1(url) {
@@ -495,6 +515,7 @@ window.addEventListener('DOMContentLoaded', function () {
             // console.log(bookNum3.quantityToBuy)
 
             filterArry3 = bookNum3.filter(function (book) {
+                // console.log(book)
                 return book.product_id._id == params.id;
                 // quant = filterArry3.quantityToBuy
 
@@ -516,12 +537,59 @@ window.addEventListener('DOMContentLoaded', function () {
 
             counterDisplay.innerHTML = quant[0]
             console.log(quant)
-          
+
         })
         .catch(function (error) {
             console.log(error)
             // An error occurred
         });
+
+
+
+        function ajaxGet4(url) {
+            return new Promise(function (resolve, reject) {
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+                        // console.log(xhr.response, xhr.responseXML);
+                        resolve(xhr.response)
+                    }
+                };
+                xhr.open('GET', url, true);
+                xhr.setRequestHeader('x-access-token', localStorage.getItem('token'));
+                xhr.setRequestHeader("Content-type", "application/json");
+    
+                xhr.onerror = reject;
+    
+                xhr.send();
+            });
+        }
+    
+        ajaxGet4(`https://new-bookstore-backend.herokuapp.com/bookstore_user/get_wishlist_items`)
+            .then(function (result) {
+    
+                let Res4 = JSON.parse(result);
+                // console.log(Res.result);
+                let bookNum4 = Res4.result
+                console.log(bookNum4);
+                console.log(bookNum4.quantityToBuy)
+    
+                filterArry4 = bookNum4.filter(function (book) {
+                    // console.log(book)
+                    if(book.product_id._id == params.id){
+                        wishButton.style.display = 'none';
+                        alWish1.style.display = 'flex';
+                    }
+                   
+
+    
+                })
+             
+            })
+            .catch(function (error) {
+                console.log(error)
+                // An error occurred
+            });
 
 
 
